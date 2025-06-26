@@ -1,1 +1,6 @@
-data_path: d:\Code\KD_DATA
+
+Trans:
+  data_path: d:\Code\KD_DATA
+Segmentation:
+  img_path: d:\Code\KD_DATA\Segm\your_dataset
+  label_path: d:\Code\KD_DATA\Segm\your_dataset_result
