@@ -16,8 +16,8 @@ class BootDataset(Dataset):
                     if os.path.join(dir_path,f'{img[0:14]}.JPG') not in self.start_items:
                         self.start_items.append(os.path.join(dir_path,f'{img[0:14]}.JPG'))
                         self.done_items.append(os.path.join(dir_path,f'{img[0:14]}_done.JPG'))
-                finally:
-                    pass
+                except:
+                    print(f'не найдена пара для {img}')
             
     def len(self):
         return len(self.start_items)

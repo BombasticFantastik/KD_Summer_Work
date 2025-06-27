@@ -4,3 +4,4 @@ Trans:
 Segmentation:
   img_path: d:\Code\KD_DATA\Segm\your_dataset
   label_path: d:\Code\KD_DATA\Segm\your_dataset_result
+  weights_path: 'd:\Code\KD_Summer_Work\Segmentation\Unet_weights.pth'

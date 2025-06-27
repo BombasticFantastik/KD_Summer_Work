@@ -6,6 +6,7 @@ class Unet(Module):
         super(Unet,self).__init__()
 
         self.ups=nn.Upsample(scale_factor=2,mode='bilinear')
+        self.sigm=nn.Sigmoid()
 
         self.lay0=nn.Sequential(
             nn.Conv2d(input_size,hidden_dim,3,padding=1),
@@ -68,8 +69,8 @@ class Unet(Module):
             nn.Conv2d(hidden_dim*32,hidden_dim*16,3,padding=1),
             nn.BatchNorm2d(hidden_dim*16),
             nn.ReLU(),
-            nn.Conv2d(hidden_dim*16,hidden_dim*16,3,padding=1),
-            nn.BatchNorm2d(hidden_dim*16),
+            nn.Conv2d(hidden_dim*16,hidden_dim*8,3,padding=1),
+            nn.BatchNorm2d(hidden_dim*8),
             nn.ReLU()
         )
 
@@ -77,8 +78,8 @@ class Unet(Module):
             nn.Conv2d(hidden_dim*16,hidden_dim*8,3,padding=1),
             nn.BatchNorm2d(hidden_dim*8),
             nn.ReLU(),
-            nn.Conv2d(hidden_dim*8,hidden_dim*8,3,padding=1),
-            nn.BatchNorm2d(hidden_dim*8),
+            nn.Conv2d(hidden_dim*8,hidden_dim*4,3,padding=1),
+            nn.BatchNorm2d(hidden_dim*4),
             nn.ReLU()
         )
 
@@ -86,8 +87,8 @@ class Unet(Module):
             nn.Conv2d(hidden_dim*8,hidden_dim*4,3,padding=1),
             nn.BatchNorm2d(hidden_dim*4),
             nn.ReLU(),
-            nn.Conv2d(hidden_dim*4,hidden_dim*4,3,padding=1),
-            nn.BatchNorm2d(hidden_dim*4),
+            nn.Conv2d(hidden_dim*4,hidden_dim*2,3,padding=1),
+            nn.BatchNorm2d(hidden_dim*2),
             nn.ReLU()
         )
 
@@ -95,22 +96,22 @@ class Unet(Module):
             nn.Conv2d(hidden_dim*4,hidden_dim*2,3,padding=1),
             nn.BatchNorm2d(hidden_dim*2),
             nn.ReLU(),
-            nn.Conv2d(hidden_dim*2,hidden_dim*2,3,padding=1),
-            nn.BatchNorm2d(hidden_dim*2),
+            nn.Conv2d(hidden_dim*2,hidden_dim,3,padding=1),
+            nn.BatchNorm2d(hidden_dim),
             nn.ReLU()
         )
 
         self.dec_lay4=nn.Sequential(
-            nn.Conv2d(input_size*2,hidden_dim,3,padding=1),
+            nn.Conv2d(hidden_dim*2,hidden_dim,3,padding=1),
             nn.BatchNorm2d(hidden_dim),
             nn.ReLU(),
-            nn.Conv2d(hidden_dim,hidden_dim,3,padding=1),
-            nn.BatchNorm2d(hidden_dim),
+            nn.Conv2d(hidden_dim,1,3,padding=1),
+            nn.BatchNorm2d(1),
             nn.ReLU()
         )
 
     def forward(self,x):
-
+        #print(x.shape)
         #encoder
         x0=self.lay0(x)
         x1=self.lay1(x0)
@@ -125,7 +126,9 @@ class Unet(Module):
         xdec0=self.dec_lay0(self.ups(torch.cat((midl_x,x4),dim=1)))
         xdec1=self.dec_lay1(self.ups(torch.cat((xdec0,x3),dim=1)))
         xdec2=self.dec_lay2(self.ups(torch.cat((xdec1,x2),dim=1)))
+        #print(xdec2.shape)
         xdec3=self.dec_lay3(self.ups(torch.cat((xdec2,x1),dim=1)))
+        #print(xdec3.shape,x0.shape)
         xdec4=self.dec_lay4(self.ups(torch.cat((xdec3,x0),dim=1)))
 
-        return xdec4
+        return self.sigm(xdec4)
