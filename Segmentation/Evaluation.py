@@ -1,10 +1,10 @@
 from matplotlib import pyplot as plt
 from torch import nn
 def Evaluate(model,dataloader):
-    sigm=nn.Sigmoid()
+    #tahn=nn.Sigmoid()
     for batch in dataloader:
 
-        pred=sigm(model(batch['img']))
+        pred=model(batch['img'])
         fig = plt.figure(figsize=(25, 15))
         for i in range(1,(batch['img'].size(0)-1),3):
             plt.subplot(16, 3, i)  
