@@ -5,6 +5,7 @@ import yaml
 from torch.optim import AdamW
 from torch.nn import BCELoss
 import torch
+import segmentation_models_pytorch as smp
 from torch.utils.data import DataLoader
 option_path=fr'D:/Code/KD_Summer_Work/config.yml'
 with open(option_path,'r') as file_option:
@@ -14,9 +15,12 @@ dataset=Boot_Segmentation_Dataset(option['Segmentation']['img_path'],option['Seg
 
 dataloader=DataLoader(dataset=dataset,batch_size=16,drop_last=False,shuffle=True)
 
-model=Unet(3,32)
+#model=Unet(3,32)
+model=smp.Unet('mobilenet_v2', encoder_weights='imagenet', classes=1, activation=None, encoder_depth=5, decoder_channels=[256, 128, 64, 32, 16])
 loss_fn=BCELoss()
 optimizer=AdamW(model.parameters(),lr=0.001)
+# weights_dict=torch.load(option['Segmentation']['weights_path'],weights_only=True)
+# model.load_state_dict(weights_dict)
 
 try:
     weights_dict=torch.load(option['Segmentation']['weights_path'],weights_only=True)
@@ -24,5 +28,5 @@ try:
 except:
     print('Весов нет, инициализируем новые')
 
-Train_model(model=model,dataloader=dataloader,loss_func=loss_fn,optimizer=optimizer,epochs=2)
+Train_model(model=model,dataloader=dataloader,loss_func=loss_fn,optimizer=optimizer,epochs=1)
 
