@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import yaml
 import torch
+
 #from progressbar import AdaptiveETA, ProgressBar, Timer
 from torch import nn
 
@@ -9,14 +10,37 @@ with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
 
 #bar = ProgressBar(widgets=widgets, max_value=100).start()
-def Train_model(model,dataloader,loss_func,optimizer,epochs,device):
+def Train_model(model,dataloader,loss_func,optimizer,epochs,device,batch_func=None,revevrse_batch_func=None):
     #loss_item=0#костыль
     model=model.to(device)
     sigm=nn.Sigmoid()
     for epoch in range(epochs):
         for batch in (pbar:=tqdm(dataloader)):
             optimizer.zero_grad()
-            pred=sigm(model(batch['img'].to(device)))
+
+            if batch_func and revevrse_batch_func:
+                real_batch=torch.Tensor()
+                for img in batch['img']:
+                    real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
+                    print(real_batch.shape)
+            else:
+                real_batch=batch[img]
+
+
+
+                
+
+
+            pred=sigm(model(real_batch.to(device)))
+
+№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+            if batch_func and revevrse_batch_func:
+                real_batch=torch.Tensor()
+                for img in batch['img']:
+                    real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
+                    print(real_batch.shape)
+            else:
+                real_batch=batch[img]
 
             loss=loss_func(pred,batch['label'])
             loss_item=loss.item()
