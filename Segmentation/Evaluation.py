@@ -12,8 +12,6 @@ def Evaluate(model,dataloader):
             plt.axis('off')  
             plt.title("pred") 
             
-
-            
             plt.subplot(16, 3, i+1)  
             plt.imshow(batch['img'][i-1].permute(1,2,0).detach().numpy())  
             plt.axis('off')  

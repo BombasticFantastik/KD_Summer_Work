@@ -17,34 +17,29 @@ def Train_model(model,dataloader,loss_func,optimizer,epochs,device,batch_func=No
     for epoch in range(epochs):
         for batch in (pbar:=tqdm(dataloader)):
             optimizer.zero_grad()
-
             if batch_func and revevrse_batch_func:
-                real_batch=torch.Tensor()
-                for img in batch['img']:
-                    real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
-                    print(real_batch.shape)
-            else:
-                real_batch=batch[img]
-
-
-
-                
-
+                real_batch=batch_func(batch['img'][0].to(device),device)
+            #     real_batch=torch.Tensor()
+            #     for img in batch['img']:
+            #         real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
+            #         print(real_batch.shape)
+            # else:
+            #     real_batch=batch[img]
 
             pred=sigm(model(real_batch.to(device)))
+            # if batch_func and revevrse_batch_func:
+            #     real_batch=torch.Tensor()
+            #     for img in batch['img']:
+            #         real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
+            # else:
+            #     real_batch=batch[img]
 
-№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
-            if batch_func and revevrse_batch_func:
-                real_batch=torch.Tensor()
-                for img in batch['img']:
-                    real_batch=torch.cat((real_batch,batch_func(img)),dim=0)
-                    print(real_batch.shape)
-            else:
-                real_batch=batch[img]
+            
 
-            loss=loss_func(pred,batch['label'])
+            pred=revevrse_batch_func(pred,device)
+            pred=pred.unsqueeze(0)
+            loss=loss_func(pred,batch['label'].to(device))
             loss_item=loss.item()
-
             loss.backward()
             optimizer.step()
             pbar.set_description(f'loss: {loss_item}')
