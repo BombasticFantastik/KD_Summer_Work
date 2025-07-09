@@ -24,7 +24,7 @@ class BootDataset(Dataset):
         self.transformation=transformation
         if self.transformation==None:
             self.transformation=transforms.Compose([
-            transforms.Resize((256,256)),
+            transforms.Resize((762,1100)),
             transforms.ToTensor()
             ])
             

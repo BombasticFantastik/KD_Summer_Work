@@ -1,1 +1,2 @@
 result
+C:\Code\KD_PRACT\KD_Summer_Work\Segmentation\Unet_weights.pth

@@ -12,7 +12,7 @@ class Boot_Segmentation_Dataset(Dataset):
 
         if self.transformation==None:
             self.transformation=transforms.Compose([
-            transforms.Resize((2048,2048)),
+            transforms.Resize((762,1100)),
             transforms.ToTensor()
             ])
     def __len__(self):
