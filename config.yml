@@ -3,5 +3,5 @@ Trans:
   data_path: C:\Code\KD_PRACT\KD_DATA
 Segmentation:
   img_path: C:\Code\KD_PRACT\KD_DATA\Segm\your_dataset
-  label_path: C:\Code\KD_PRACT\KD_DATA\Segm\your_dataset_result
-  weights_path: C:\Code\KD_PRACT\KD_Summer_Work\Segmentation\Unet_weights.pth
+  label_path: C:/Code/KD_PRACT/KD_DATA/Segm/your_dataset_result
+  weights_path: C:/Code/KD_PRACT/KD_Summer_Work/Segmentation/Unet_weights.pth

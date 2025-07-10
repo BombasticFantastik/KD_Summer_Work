@@ -50,22 +50,20 @@ with open(option_path,'r') as file_option:
 #         except:
 #             print('ошибка сохранения весов')
 
-def Train_model(model,dataloader,loss_func,optimizer,epochs,device):
+def Train_model(model,dataloader,loss_func,optimizer,device):
     #loss_item=0#костыль
     model=model.to(device)
     sigm=nn.Sigmoid()
-    for epoch in range(epochs):
-        for batch in (pbar:=tqdm(dataloader)):
-            optimizer.zero_grad()
-            pred=sigm(model(batch['img'].to(device)))
+    for batch in (pbar:=tqdm(dataloader)):
+        optimizer.zero_grad()
+        pred=sigm(model(batch['img'].to(device)))
         
-            loss=loss_func(pred,batch['label'].to(device))
-            loss_item=loss.item()
-            loss.backward()
-            optimizer.step()
-            pbar.set_description(f'loss: {loss_item}')
-
-            try:
-                torch.save(model.state_dict(),option['Segmentation']['weights_path'])
-            except:
-                print('ошибка сохранения весов')
+        loss=loss_func(pred,batch['label'].to(device))
+        loss_item=loss.item()
+        loss.backward()
+        optimizer.step()
+        pbar.set_description(f'loss: {loss_item}')
+    try:
+        torch.save(model.state_dict(),option['Segmentation']['weights_path'])
+    except:
+        print('ошибка сохранения весов')
