@@ -7,7 +7,7 @@ from torch.optim import AdamW
 from torch.nn import BCELoss
 import torch
 import torch.utils.data as data_utils
-indices = torch.arange(50)
+indices = torch.arange(500)
 
 import segmentation_models_pytorch as smp
 from torch.utils.data import DataLoader
@@ -37,9 +37,10 @@ except:
     print('Весов нет, инициализируем новые')
 
 #Train_model(model=model,dataloader=dataloader,loss_func=loss_fn,optimizer=optimizer,epochs=1,device=device,batch_func=img4batch,revevrse_batch_func=batch4img)
-Train_model(model=model,dataloader=dataloader,loss_func=loss_fn,optimizer=optimizer,device=device)
-try:
-    torch.save(model.state_dict(),option['Segmentation']['weights_path'])
-except:
-    print('ошибка сохранения весов')
+for i in range(5):
+    try:
+        Train_model(model=model,dataloader=dataloader,loss_func=loss_fn,optimizer=optimizer,device=device)
+    except:
+        print('ошибка')
+
 

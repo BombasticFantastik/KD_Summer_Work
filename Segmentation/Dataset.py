@@ -19,6 +19,7 @@ class Boot_Segmentation_Dataset(Dataset):
         return len(self.all_items)
     def __getitem__(self,idx):
         img=self.transformation(Image.open(self.all_items[idx])) #.rotate(90,expand=True)
+        #print(self.all_labels[idx])
         label=self.transformation(Image.open(self.all_labels[idx]))
 
         return {

@@ -4,11 +4,11 @@ def Evaluate(model,dataloader,device):
     sigm=nn.Sigmoid()
     for batch in dataloader:
 
-        pred=sigm(model(batch['img']).to(device))
+        pred=sigm(model(batch['img'].to(device)))
         fig = plt.figure(figsize=(25, 15))
         for i in range(1,(batch['img'].size(0)-1),3):
             plt.subplot(16, 3, i)  
-            plt.imshow(pred[i-1].permute(2,1,0).detach().numpy())  
+            plt.imshow(pred[i-1].cpu().permute(2,1,0).detach().numpy())  
             plt.axis('off')  
             plt.title("pred") 
             print(1)

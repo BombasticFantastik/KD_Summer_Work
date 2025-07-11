@@ -63,7 +63,8 @@ def Train_model(model,dataloader,loss_func,optimizer,device):
         loss.backward()
         optimizer.step()
         pbar.set_description(f'loss: {loss_item}')
-    try:
-        torch.save(model.state_dict(),option['Segmentation']['weights_path'])
-    except:
-        print('ошибка сохранения весов')
+        try:
+            torch.save(model.state_dict(),option['Segmentation']['weights_path'])
+        except:
+            print('ошибка сохранения весов')
+
