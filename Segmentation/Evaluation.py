@@ -1,7 +1,12 @@
 from matplotlib import pyplot as plt
 from torch import nn
+
+#def treshold(tens):
+
+
 def Evaluate(model,dataloader,device):
     sigm=nn.Sigmoid()
+    #tresh=m = nn.Threshold(0.1, 1)
     for batch in dataloader:
 
         pred=sigm(model(batch['img'].to(device)))
@@ -25,4 +30,5 @@ def Evaluate(model,dataloader,device):
             plt.title("label") 
 
         plt.show()
+        return pred
         break

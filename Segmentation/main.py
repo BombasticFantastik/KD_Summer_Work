@@ -7,7 +7,7 @@ from torch.optim import AdamW
 from torch.nn import BCELoss
 import torch
 import torch.utils.data as data_utils
-indices = torch.arange(500)
+#indices = torch.arange(500)
 
 import segmentation_models_pytorch as smp
 from torch.utils.data import DataLoader
@@ -19,7 +19,7 @@ with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
 
 dataset=Boot_Segmentation_Dataset(option['Segmentation']['img_path'],option['Segmentation']['label_path'])
-dataset = data_utils.Subset(dataset, indices)
+#dataset = data_utils.Subset(dataset, indices)
 
 dataloader=DataLoader(dataset=dataset,batch_size=4,drop_last=False,shuffle=True)
 
