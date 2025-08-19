@@ -1,7 +1,7 @@
 
 Trans:
-  data_path: C:\Code\KD_PRACT\KD_DATA
+  data_path: /home/artemybombastic/MyGit/KD_Data/TransformData/
 Segmentation:
-  img_path: C:\Code\KD_PRACT\KD_DATA\Segm\your_dataset
-  label_path: C:/Code/KD_PRACT/KD_DATA/Segm/your_dataset_result
-  weights_path: C:/Code/KD_PRACT/KD_Summer_Work/Segmentation/Unet_weights.pth
+  img_path: /home/artemybombastic/MyGit/KD_Data/SegmData/your_dataset/
+  label_path: /home/artemybombastic/MyGit/KD_Data/SegmData/your_dataset_result/
+  weights_path: /home/artemybombastic/MyGit/KD_Data/SegmData/Unet_weights.pth

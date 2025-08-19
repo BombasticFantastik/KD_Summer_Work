@@ -6,7 +6,7 @@ import torch.utils.data as data_utils
 #from progressbar import AdaptiveETA, ProgressBar, Timer
 from torch import nn
 
-option_path=fr'C:\Code\KD_PRACT\KD_Summer_Work\config.yml'
+option_path=fr'/home/artemybombastic/MyGit/KD_Summer_Work/config.yml'
 with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
 
@@ -25,6 +25,6 @@ def Train_model(model,dataloader,loss_func,optimizer,device):
         optimizer.step()
         pbar.set_description(f'loss: {loss_item}')
         try:
-            torch.save(model.state_dict(),f'/content/drive/My Drive/Colab Notebooks/unet_model_{device}.pth')
+            torch.save(model.state_dict(),f'/home/artemybombastic/MyGit/KD_Data/SegmData/unet_model_{device}.pth')
         except:
             print('ошибка сохранения весов')
