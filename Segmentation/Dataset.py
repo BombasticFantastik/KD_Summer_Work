@@ -16,7 +16,7 @@ class Boot_Segmentation_Dataset(Dataset):
         if self.transformation==None:
             self.transformation=transforms.Compose([
             #transforms.RandomResizedCrop(size=(2000, 2000)),
-            transforms.Resize((1100,762)),
+            transforms.Resize((1024,512)),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
 
@@ -28,7 +28,7 @@ class Boot_Segmentation_Dataset(Dataset):
         if self.back_transformation==None:
             self.back_transformation=transforms.Compose([
             #transforms.RandomResizedCrop(size=(2000, 2000)),
-            transforms.Resize((762,1100)),
+            transforms.Resize((512,1024)),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
 
