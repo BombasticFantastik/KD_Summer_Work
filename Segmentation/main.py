@@ -23,7 +23,7 @@ with open(option_path,'r') as file_option:
 
 
 dataset=Boot_Segmentation_Dataset(option['Segmentation']['img_path'],option['Segmentation']['label_path'],)
-dataloader=DataLoader(dataset=dataset,batch_size=4,drop_last=False,shuffle=True)
+dataloader=DataLoader(dataset=dataset,batch_size=2,drop_last=False,shuffle=True)
 assert dataset.all_items[0].split('/')[-1][:-4]==dataset.all_labels[0].split('/')[-1][:-4]
 model=Unet(3,64).to(device)
 try:

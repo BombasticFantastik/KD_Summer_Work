@@ -36,13 +36,13 @@ class UpConv(Module):
     def __init__(self,input_size,output_size):
         super(UpConv,self).__init__()
 
-        self.up_samlpe=nn.ConvTranspose2d(input_size,output_size,kernel_size=2, stride=2)
-        self.double_conv=DoubleConv(input_size+output_size,output_size)
+        self.up_samlpe=nn.ConvTranspose2d(input_size-output_size, input_size-output_size,kernel_size=2, stride=2)
+        self.double_conv=DoubleConv(input_size,output_size)
 
     def forward(self,x,skiped_x):
-        print(x.shape)
+        
         x=self.up_samlpe(x)
-        print(x.shape,skiped_x.shape)
+        
         cat_x=torch.cat([x,skiped_x],dim=1)
         
         return self.double_conv(cat_x)
@@ -61,43 +61,44 @@ class Unet(Module):
         self.bottleneck=DoubleConv(hidden_dim*8,hidden_dim*16)
 
         #up
-        self.up_conv3=UpConv(hidden_dim*16,hidden_dim*8)
-        self.up_conv2=UpConv(hidden_dim*8,hidden_dim*4)
-        self.up_conv1=UpConv(hidden_dim*4,hidden_dim*2)
-        self.up_conv0=UpConv(hidden_dim*2,hidden_dim)
+        self.up_conv3=UpConv(hidden_dim*16+hidden_dim*8,hidden_dim*8)
+        self.up_conv2=UpConv(hidden_dim*8+hidden_dim*4,hidden_dim*4)
+        self.up_conv1=UpConv(hidden_dim*4+hidden_dim*2,hidden_dim*2)
+        self.up_conv0=UpConv(hidden_dim*2+hidden_dim,hidden_dim)
 
         #finlin
         self.last_conv=nn.Conv2d(hidden_dim,1,kernel_size=1)
 
     def forward(self,x):
 
-        print(x.shape)
+
 
         x,skip0=self.down_conv0(x)
-        print(x.shape,skip0.shape)
+        
 
         x,skip1=self.down_conv1(x)
-        print(x.shape,skip1.shape)
+
 
         x,skip2=self.down_conv2(x)
-        print(x.shape,skip2.shape)
+
 
         x,skip3=self.down_conv3(x)
 
-        print('_________')
+
         x=self.bottleneck(x)
-        print(x.shape,skip3.shape)
+
+
 
         x=self.up_conv3(x,skip3)
-        print(x.shape)
+
         x=self.up_conv2(x,skip2)
-        print(x.shape)
+
         x=self.up_conv1(x,skip1)
-        print(x.shape)
+
         x=self.up_conv0(x,skip0)
-        print(x.shape)
+
         x=self.last_conv(x)
-        print(x.shape)
+
         return x
 
 
