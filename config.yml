@@ -5,3 +5,5 @@ Segmentation:
   img_path: /home/artemybombastic/MyGit/KD_Data/SegmData/your_dataset/
   label_path: /home/artemybombastic/MyGit/KD_Data/SegmData/your_dataset_result/
   weights_path: /home/artemybombastic/MyGit/KD_Data/SegmData/Unet_weights.pth
+Result:
+  img_path: /home/artemybombastic/MyGit/KD_Data/ResultData
