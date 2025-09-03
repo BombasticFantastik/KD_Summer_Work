@@ -4,45 +4,55 @@ import os
 import PIL
 from torchvision import transforms
 
-class BootDataset(Dataset):
-    def __init__(self,path,transformation=None):
-        super(BootDataset,self).__init__()
-        self.dirs=os.listdir(path)
-        self.start_items=[]
-        self.done_items=[]
-        for dir in self.dirs:
-            dir_path=os.path.join(path,dir)
-            for img in os.listdir(dir_path):  
-                try:
-                    if os.path.join(dir_path,f'{img[0:14]}.JPG') not in self.start_items:
-                        self.start_items.append(os.path.join(dir_path,f'{img[0:14]}.JPG'))
-                        self.done_items.append(os.path.join(dir_path,f'{img[0:14]}_done.JPG'))
-                except:
-                    print(f'не найдена пара для {img}')
+class Boot_Rotate_Dataset(Dataset):
+  def __init__(self,path):
+    super(Boot_Rotate_Dataset,self).__init__()
 
-            
-        self.transformation=transformation
-        if self.transformation==None:
-            self.transformation=transforms.Compose([
-            transforms.Resize((762,1100)),
-            transforms.ToTensor()
-            ])
-            
-    def __len__(self):
-        return len(self.start_items)
-            
+    dirs=[os.path.join(path,dir) for dir in os.listdir(path)]
+
+    self.all_images=[]
+    for dir in dirs:
+      images=[os.path.join(dir,img) for img in os.listdir(dir) if 'done' in img]
+      self.all_images+=images
+
+    self.trans=transforms.Compose([
+
+        transforms.Resize((762,1100))
+    ])
+    self.tensor_trans=transforms.Compose([
+
+        transforms.Resize((762,1100)),
+        transforms.ToTensor()
+    ])
 
 
-                #self.start_items+=[os.path.join(dir_path,img_path) for img_path in os.listdir(dir_path) if not 'done' in img_path ]
-                #self.done_items+=[os.path.join(dir_path,img_path) for img_path in os.listdir(dir_path) if 'done' in img_path ]
+  def __len__(self):
+    return len(self.all_images)
 
+  def __getitem__(self,idx):
 
-    def __getitem__(self, idx):
+    img=Image.open(self.all_images[idx])
 
-        start_img=self.transformation(PIL.Image.open(self.start_items[idx]))
-        done_img=self.transformation(PIL.Image.open(self.done_items[idx]))
-        
-        return {
-            'start_img':start_img,
-            'done_img':done_img,
+    if randint(0,1):
+      degr=randint(0,10)
+      img=img.rotate(degr,expand=True)
+      #img=self.trans(img)
+      new_width,new_height=(610,932)
+
+    else:
+      degr=randint(350,360)
+      img=img.rotate(degr,expand=True)
+      #img=self.trans(img)
+      new_width,new_height=(610,932)
+
+    width,height=img.size
+    left=(width-new_width)//2
+    top=(height-new_height)//2
+    right=left+new_width
+    bottom=top+new_height
+    img=img.crop((left,top,right,bottom))
+    tensor_img=self.tensor_trans(img)
+    return {
+        "img": tensor_img,
+        "label":torch.FloatTensor([degr])
         }
