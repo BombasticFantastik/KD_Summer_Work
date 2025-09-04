@@ -3,6 +3,8 @@ from Dataset import Boot_Rotate_Dataset
 import os
 from Model import Transfered_Resnet50
 import torch
+
+from Loop import Train_degr_model
 from torch.utils.data import DataLoader
 from torch import nn
 # option_path=fr'D:/Code/KD_Summer_Work/config.yml' ---------------------подредачить
@@ -17,3 +19,4 @@ resnet_model=Transfered_Resnet50()#loss:93636.875,30000,63915.5
 loss_func=nn.MSELoss()
 optimizer=torch.optim.AdamW(resnet_model.parameters())
 device='cpu'
+Train_degr_model(model=resnet_model,dataloader=degr_dataloader,loss_func=loss_func,optimizer=optimizer,device=device)

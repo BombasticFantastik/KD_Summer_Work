@@ -1,12 +1,12 @@
 import torch
-
+from tqdm import tqdm
+from torch import nn
 def Train_degr_model(model,dataloader,loss_func,optimizer,device):
     #loss_item=0#костыль
     model=model.to(device)
-    sigm=nn.Sigmoid()
     for batch in (pbar:=tqdm(dataloader)):
         optimizer.zero_grad()
-        pred=sigm(model(batch['img'].to(device)))
+        pred=model(batch['img'].to(device))
         #print(pred,batch['label'])
 
 

@@ -1,6 +1,8 @@
-import PIL.Image
+from PIL import Image
 from torch.utils.data import Dataset
 import os
+import torch
+from random import randint
 import PIL
 from torchvision import transforms
 
