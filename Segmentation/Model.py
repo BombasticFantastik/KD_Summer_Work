@@ -98,7 +98,6 @@ class Unet(Module):
         x=self.up_conv0(x,skip0)
 
         x=self.last_conv(x)
-
         return x
 
 

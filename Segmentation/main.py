@@ -9,18 +9,12 @@ import torch
 import torch.utils.data as data_utils
 from torch.utils.data import DataLoader
 
-
-
-
-
 option_path=fr'/home/artemybombastic/MyGit/KD_Summer_Work/config.yml'
 device='cuda' if torch.cuda.is_available() else 'cpu'
 device='cpu'
 print(device)
 with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
-
-
 
 dataset=Boot_Segmentation_Dataset(option['Segmentation']['img_path'],option['Segmentation']['label_path'],)
 dataloader=DataLoader(dataset=dataset,batch_size=2,drop_last=False,shuffle=True)
