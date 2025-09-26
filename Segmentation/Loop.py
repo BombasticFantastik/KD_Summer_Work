@@ -3,6 +3,8 @@ import yaml
 import torch
 import torch.utils.data as data_utils
 
+from torchvision.transforms.functional import adjust_contrast,adjust_sharpness
+
 #from progressbar import AdaptiveETA, ProgressBar, Timer
 from torch import nn
 
@@ -16,6 +18,7 @@ def Train_model(model,dataloader,loss_func,optimizer,device):
     sigm=nn.Sigmoid()
     for batch in (pbar:=tqdm(dataloader)):
         optimizer.zero_grad()
+        batch['img']=adjust_sharpness(adjust_contrast(batch['img'],2),2)
         pred=sigm(model(batch['img'].to(device)))
         loss=loss_func(pred,batch['label'].to(device))
         loss_item=loss.item()

@@ -20,8 +20,6 @@ class Boot_Segmentation_Dataset(Dataset):
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
 
-            transforms.ColorJitter(
-            brightness=0.15, contrast=0.15, saturation=0.2, hue=0.5),
             transforms.ToTensor(),
 
             ])
@@ -32,8 +30,6 @@ class Boot_Segmentation_Dataset(Dataset):
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
 
-            transforms.ColorJitter(
-            brightness=0.15, contrast=0.15, saturation=0.2, hue=0.5),
             transforms.ToTensor()
             ])
     def __len__(self):
