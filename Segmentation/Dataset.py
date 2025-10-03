@@ -19,7 +19,6 @@ class Boot_Segmentation_Dataset(Dataset):
             transforms.Resize((1024,512)),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
-
             transforms.ToTensor(),
 
             ])
