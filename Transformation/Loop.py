@@ -1,6 +1,13 @@
 import torch
 from tqdm import tqdm
 from torch import nn
+
+
+# def accuracy(x,pred):
+#     result=torch.abs(x-pred)
+#     return result().sum()
+
+
 def Train_degr_model(model,dataloader,loss_func,optimizer,device):
     #loss_item=0#костыль
     model=model.to(device)
@@ -8,8 +15,6 @@ def Train_degr_model(model,dataloader,loss_func,optimizer,device):
         optimizer.zero_grad()
         pred=model(batch['img'].to(device))
         #print(pred,batch['label'])
-
-
         loss=loss_func(pred,batch['label'].to(device))
         loss_item=loss.item()
         loss.backward()
