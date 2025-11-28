@@ -53,3 +53,38 @@ class Boot_Segmentation_Dataset(Dataset):
             'img':tensor_img,
             'label':tensor_label
         }
+    
+
+
+class Eval_Boot_Segmentation_Dataset(Dataset):
+    def __init__(self,img_path,label_path,transformation=None,back_transformation=None):
+        super(Eval_Boot_Segmentation_Dataset,self).__init__()
+        self.transformation=transformation
+        self.back_transformation=back_transformation
+        self.all_items=[os.path.join(img_path,img) for img in os.listdir(img_path)]
+        self.all_labels=[os.path.join(label_path,label) for label in os.listdir(label_path)]
+        self.all_items.sort()
+        self.all_labels.sort()
+
+        if self.transformation==None:
+            self.transformation=transforms.Compose([
+            transforms.Resize((1024,512)),
+            transforms.ToTensor()
+            ])
+    def __len__(self):
+        return len(self.all_items)
+    def __getitem__(self,idx):
+        img=Image.open(self.all_items[idx])
+        exif = img._getexif()
+        if exif is not None:
+            orientation = exif.get(274)  
+            if orientation == 3:
+                img = img.rotate(180, expand=True)
+            elif orientation == 6:
+                img = img.rotate(270, expand=True)
+            elif orientation == 8:
+                img = img.rotate(90, expand=True)
+        tensor_img=self.transformation(img)
+        return {
+            'img':tensor_img,
+        }
