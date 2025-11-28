@@ -7,10 +7,10 @@ from torch import nn
 #     result=torch.abs(x-pred)
 #     return result().sum()
 
-
 def Train_degr_model(model,dataloader,loss_func,optimizer,device):
     #loss_item=0#костыль
     model=model.to(device)
+    model.train()
     for batch in (pbar:=tqdm(dataloader)):
         optimizer.zero_grad()
         pred=model(batch['img'].to(device))
@@ -19,8 +19,13 @@ def Train_degr_model(model,dataloader,loss_func,optimizer,device):
         loss_item=loss.item()
         loss.backward()
         optimizer.step()
-        pbar.set_description(f'loss: {loss_item}')
-        try:
-            torch.save(model.state_dict(),f'/home/artemybombastic/MyGit/KD_Data/degr_net_{device}.pth')
-        except:
-            print('ошибка сохранения весов')
+        pbar.set_description(f'loss: {loss_item} accuracy: {accuracy(batch['label'],pred)}')
+    try:
+        torch.save(model.state_dict(),f'/home/artemybombastic/MyGit/KD_Data/degr_net_{device}.pth')
+    except:
+        print('ошибка сохранения весов')
+
+    
+def accuracy(x,pred):
+    result=torch.abs(x-pred)
+    return result.sum().item()

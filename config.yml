@@ -7,3 +7,5 @@ Segmentation:
   weights_path: /home/artemybombastic/MyGit/KD_Data/SegmData/Unet_weights.pth
 Result:
   img_path: /home/artemybombastic/MyGit/KD_Data/ResultData
+
+device: cpu

@@ -83,3 +83,5 @@ class Transfered_Resnet50(nn.Module):
 
         
 
+        
+
