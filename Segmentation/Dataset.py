@@ -77,7 +77,7 @@ class Eval_Boot_Segmentation_Dataset(Dataset):
         img=Image.open(self.all_items[idx])
         exif = img._getexif()
         if exif is not None:
-            orientation = exif.get(274)  
+            orientation = exif.get(274)     
             if orientation == 3:
                 img = img.rotate(180, expand=True)
             elif orientation == 6:
